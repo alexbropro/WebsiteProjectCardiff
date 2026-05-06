@@ -88,5 +88,20 @@ def add_to_basket(id):
 def checkout():
     return render_template('checkout.html')
 
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout():
+    basket = session.get('basket', [])
+    total = 0
+    for item_id in basket:
+        item = Item.query.get(item_id)
+        if item:
+            total += item.price
+    return render_template('checkout.html', total=total)
+
+@app.route('/checkout/success')
+def checkout_success():
+    session.pop('basket', None)
+    return render_template('success.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

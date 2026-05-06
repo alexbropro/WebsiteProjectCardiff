@@ -36,8 +36,11 @@
   <main class="container">
     <section class="product-listing">
       <h2>Available Manga</h2>
-      <a href="{{ url_for('manga', sort='name') }}">Sort by Name</a>
-      <a href="{{ url_for('manga', sort='price') }}">Sort by Price</a>
+      <div class="sort-bar">
+      <span>Sort by:</span>
+      <a href="{{ url_for('manga', sort='name') }}" class="sort-btn {% if sort == 'name' %}active{% endif %}">Name</a>
+      <a href="{{ url_for('manga', sort='price') }}" class="sort-btn {% if sort == 'price' %}active{% endif %}">Price</a>
+      </div>
       <div class="product-grid">
         {% for item in items %}
 <article class="product-card">
