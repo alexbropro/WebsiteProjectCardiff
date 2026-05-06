@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ item.name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='product.css') }}">
+</head>
+<script src="{{ url_for('static', filename='basket.js') }}"></script>
+<body>
+  <header class="hero">
+    <div class="container">
+      <h1>MangaFF</h1>
+      <p>Manga. For the Fans.</p>
+    </div>
+  </header>
+  <nav class="main-nav">
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('manga') }}">Manga</a></li>
+        <li><a href="#ln">Light Novels</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <form class="search-form" action="#" method="get">
+        <input type="search" name="q" placeholder="Search the site..." aria-label="Search">
+        <button type="submit">Search</button>
+      </form>
+      <a href="{{ url_for('basket') }}" class="basket-link">
+        <img src="{{ url_for('static', filename='baslet.png') }}" alt="Basket" class="basket-icon">
+      </a>
+    </div>
+  </nav>
+  <main class="container">
+    <section class="product">
+      <div class="product-detail-card">
+        <img id="productImage" src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
+        <div class="product-detail-info">
+          <h1 id="productName">{{ item.name }}</h1>
+          <p id="productDescription">{{ item.description }}</p>
+          <p><strong>Price:</strong> £{{ item.price }}</p>
+          <p><strong>By:</strong> {{ item.author }}</p>
+          <p><strong>Eco Impact:</strong> {{ item.eco_impact }}</p>
+          <button class="product-button add-to-basket" data-id="{{ item.id }}">Add to Basket</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

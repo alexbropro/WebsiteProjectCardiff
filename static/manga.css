@@ -206,3 +206,16 @@
 .product-button:hover {
   background-color: #2563eb;
 }
+.product-image-wrap {
+  overflow: hidden;
+}
+
+.product-image-wrap img {
+  transition: transform 0.3s ease;
+  width: 100%;
+  display: block;
+}
+
+.product-card:hover .product-image-wrap img {
+  transform: scale(1.05);
+}

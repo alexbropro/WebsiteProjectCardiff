@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basket</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <style>
+    .basket-container { max-width: 860px; margin: 2rem auto; padding: 0 1rem; }
+    .basket-title { text-align: center; font-size: 1.4rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .basket-delivery-bar { display: flex; align-items: center; gap: 0.5rem; border: 1.5px solid #1abc9c; padding: 0.6rem 1rem; margin-bottom: 2rem; font-size: 0.9rem; color: #1abc9c; }
+    .basket-table { width: 100%; border-collapse: collapse; }
+    .basket-table th { text-align: left; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 0.75rem; border-bottom: 1px solid #ddd; color: #888; }
+    .basket-table th:last-child { text-align: right; }
+    .basket-row td { padding: 1.25rem 0; border-bottom: 1px solid #eee; vertical-align: middle; }
+    .basket-product { display: flex; align-items: center; gap: 1rem; }
+    .basket-product img { width: 90px; height: 120px; object-fit: cover; background: #f5f5f5; }
+    .basket-product-info { display: flex; flex-direction: column; gap: 0.25rem; }
+    .basket-product-name { font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
+    .basket-product-price { font-size: 0.85rem; color: #555; }
+    .basket-product-eco { font-size: 0.8rem; color: #1abc9c; }
+    .basket-remove { font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; color: #888; text-decoration: underline; cursor: pointer; background: none; border: none; padding: 0; margin-top: 0.25rem; }
+    .basket-remove:hover { color: #333; }
+    .basket-total-row { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-top: 1.5rem; font-size: 0.95rem; }
+    .basket-total-label { color: #888; letter-spacing: 1px; text-transform: uppercase; font-size: 0.8rem; }
+    .basket-total-amount { font-weight: 500; font-size: 1.1rem; }
+    .basket-checkout-btn { display: block; width: 100%; max-width: 860px; margin: 1rem auto 0; background: #111; color: #fff; border: none; padding: 1rem; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; text-align: center; text-decoration: none; }
+    .basket-checkout-btn:hover { background: #333; }
+    .basket-empty { text-align: center; padding: 3rem; color: #888; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <h1>MangaFF</h1>
+      <p>Manga. For the Fans.</p>
+    </div>
+  </header>
+  <nav class="main-nav">
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('manga') }}">Manga</a></li>
+        <li><a href="#ln">Light Novels</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <form class="search-form" action="#" method="get">
+        <input type="search" name="q" placeholder="Search the site..." aria-label="Search">
+        <button type="submit">Search</button>
+      </form>
+      <a href="{{ url_for('basket') }}" class="basket-link">
+        <img src="{{ url_for('static', filename='baslet.png') }}" alt="Basket" class="basket-icon">
+      </a>
+    </div>
+  </nav>
+
+  <div class="basket-container">
+    <h1 class="basket-title">Cart</h1>
+
+    {% if items %}
+
+      <table class="basket-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Eco Impact</th>
+            <th style="text-align:right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr class="basket-row">
+            <td>
+              <div class="basket-product">
+                <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
+                <div class="basket-product-info">
+                  <span class="basket-product-name">{{ item.name }}</span>
+                  <span class="basket-product-price">£{{ item.price }}</span>
+                  <span class="basket-product-eco">{{ item.eco_impact }}</span>
+                  <a href="{{ url_for('remove_from_basket', id=item.id) }}" class="basket-remove">Remove</a>
+                </div>
+              </div>
+            </td>
+            <td>{{ item.eco_impact }}</td>
+            <td style="text-align:right">£{{ "%.2f"|format(item.price) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="basket-total-row">
+        <span class="basket-total-label">Total:</span>
+        <span class="basket-total-amount">£{{ "%.2f"|format(total) }}</span>
+      </div>
+
+      <a href="{{ url_for('checkout') }}" class="basket-checkout-btn">Secure Checkout</a>
+
+    {% else %}
+      <div class="basket-empty">
+        <p>Your basket is empty.</p>
+        <a href="{{ url_for('manga') }}">Continue Shopping</a>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
