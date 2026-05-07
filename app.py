@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -86,10 +86,6 @@ def add_to_basket(id):
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
-    return render_template('checkout.html')
-
-@app.route('/checkout', methods=['GET', 'POST'])
-def checkout():
     basket = session.get('basket', [])
     total = 0
     for item_id in basket:
@@ -101,7 +97,39 @@ def checkout():
 @app.route('/checkout/success')
 def checkout_success():
     session.pop('basket', None)
-    return render_template('success.html')
+    return render_template('successpage.html')
+
+@app.route('/api/item/<int:id>')
+def item_api(id):
+    item = Item.query.get_or_404(id)
+    return jsonify({
+        'id': item.id,
+        'name': item.name,
+        'description': item.description,
+        'price': item.price,
+        'author': item.author,
+        'image': item.image
+    })
+
+
+@app.route('/api/search')
+def search_api():
+    query = request.args.get('q', '')
+    if query:
+        results = Item.query.filter(
+            (Item.name.ilike(f'%{query}%')) | 
+            (Item.author.ilike(f'%{query}%'))
+        ).all()
+    else:
+        results = []
+    return jsonify([{
+        'id': item.id,
+        'name': item.name,
+        'author': item.author,
+        'image': item.image,
+        'price': item.price
+    } for item in results])
+
 
 if __name__ == '__main__':
     app.run(debug=True)

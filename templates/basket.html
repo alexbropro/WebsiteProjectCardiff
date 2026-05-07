@@ -44,10 +44,11 @@
         <li><a href="#ln">Light Novels</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <form class="search-form" action="#" method="get">
-        <input type="search" name="q" placeholder="Search the site..." aria-label="Search">
-        <button type="submit">Search</button>
-      </form>
+      <div class="search-form">
+        <input type="search" id="search-input" name="q" placeholder="Search the site..." aria-label="Search" autocomplete="off">
+        <button type="button">Search</button>
+        <div class="search-dropdown" id="search-dropdown"></div>
+      </div>
       <a href="{{ url_for('basket') }}" class="basket-link">
         <img src="{{ url_for('static', filename='baslet.png') }}" alt="Basket" class="basket-icon">
       </a>
@@ -102,5 +103,6 @@
       </div>
     {% endif %}
   </div>
+  <script src="{{ url_for('static', filename='search.js') }}"></script>
 </body>
 </html>

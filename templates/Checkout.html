@@ -91,39 +91,47 @@
 
   <script>
     document.getElementById('checkout-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      let valid = true;
+  e.preventDefault();
+  let valid = true;
 
-      const fields = ['full-name', 'email', 'address', 'expiry', 'cvv'];
-      fields.forEach(function(id) {
-        const input = document.getElementById(id);
-        const err = document.getElementById('err-' + id);
-        if (!input.value.trim()) {
-          input.classList.add('error');
-          err.classList.add('show');
-          valid = false;
-        } else {
-          input.classList.remove('error');
-          err.classList.remove('show');
-        }
-      });
+  const fields = [
+    { inputId: 'full-name', errId: 'err-name' },
+    { inputId: 'email', errId: 'err-email' },
+    { inputId: 'address', errId: 'err-address' },
+    { inputId: 'expiry', errId: 'err-expiry' },
+    { inputId: 'cvv', errId: 'err-cvv' },
+  ];
 
-      const card = document.getElementById('card');
-      const errCard = document.getElementById('err-card');
-      const digits = card.value.replace(/[\s-]/g, '');
-      if (digits.length !== 16 || !/^\d{16}$/.test(digits)) {
-        card.classList.add('error');
-        errCard.classList.add('show');
-        valid = false;
-      } else {
-        card.classList.remove('error');
-        errCard.classList.remove('show');
-      }
+  fields.forEach(function(field) {
+    const input = document.getElementById(field.inputId);
+    const err = document.getElementById(field.errId);
+    if (!input.value.trim()) {
+      input.classList.add('error');
+      err.classList.add('show');
+      valid = false;
+    } else {
+      input.classList.remove('error');
+      err.classList.remove('show');
+    }
+  });
 
-      if (valid) {
-        window.location.href = "{{ url_for('checkout_success') }}";
-      }
-    });
+  const card = document.getElementById('card');
+  const errCard = document.getElementById('err-card');
+  const digits = card.value.replace(/[\s-]/g, '');
+  if (digits.length !== 16 || !/^\d{16}$/.test(digits)) {
+    card.classList.add('error');
+    errCard.classList.add('show');
+    valid = false;
+  } else {
+    card.classList.remove('error');
+    errCard.classList.remove('show');
+  }
+
+  if (valid) {
+    window.location.href = "{{ url_for('checkout_success') }}";
+  }
+});
   </script>
+  <script src="{{ url_for('static', filename='search.js') }}"></script>
 </body>
 </html>

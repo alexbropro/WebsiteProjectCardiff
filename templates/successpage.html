@@ -3,8 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Homepage</title>
+  <title>Order Successful</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <style>
+    .success-container { max-width: 500px; margin: 4rem auto; text-align: center; padding: 0 1rem; }
+    .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .success-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .success-msg { color: #888; margin-bottom: 2rem; }
+    .success-btn { display: inline-block; background-color: #1d4ed8; color: white; border-radius: 999px; padding: 10px 24px; font-weight: 600; text-decoration: none; }
+    .success-btn:hover { background-color: #2563eb; }
+  </style>
 </head>
 <body>
   <header class="hero">
@@ -31,33 +39,12 @@
       </a>
     </div>
   </nav>
-  <main class="container">
-    <section class="intro">
-      <h2>Recently Released!</h2>
-      <div class="image-boxes">
-        {% for item in items %}
-        <div class="image-box" data-id="{{ item.id }}">
-          <a href="{{ url_for('product', id=item.id) }}">
-            <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
-          </a>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
-  </main>
-
-  <div id="item-overlay" class="item-overlay" style="display:none;">
-    <img id="overlay-img" src="" alt="">
-    <div class="overlay-info">
-      <h3 id="overlay-name"></h3>
-      <p id="overlay-desc"></p>
-      <p><strong>Price:</strong> £<span id="overlay-price"></span></p>
-      <p><strong>By:</strong> <span id="overlay-author"></span></p>
-      <a id="overlay-link" href="#" class="overlay-btn">View Product</a>
-    </div>
+  <div class="success-container">
+    <div class="success-icon">✅</div>
+    <h1 class="success-title">Order Placed Successfully!</h1>
+    <p class="success-msg">Thank you for your order. Your manga is on its way!</p>
+    <a href="{{ url_for('manga') }}" class="success-btn">Continue Shopping</a>
   </div>
-
-  <script src="{{ url_for('static', filename='index.js') }}"></script>
   <script src="{{ url_for('static', filename='search.js') }}"></script>
 </body>
 </html>
